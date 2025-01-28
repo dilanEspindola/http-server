@@ -1,7 +1,15 @@
-use std::borrow::Cow;
+use std::{borrow::Cow, collections::HashMap};
 
-pub fn parser(request: &Cow<'_, str>) {
-    // let split_request: Vec<&str> = request.split(' ').collect();
+struct Request {
+    mathod: String,
+    path: String,
+    http_version: String,
+    header: HashMap<String, String>,
+    body: Option<String>,
+}
+
+pub fn parser(request: &Cow<'_, str>) -> Request {
+    let split_request: Vec<&str> = request.split(' ').collect();
 
     println!("{}", request);
 
@@ -9,7 +17,19 @@ pub fn parser(request: &Cow<'_, str>) {
     //     println!("request item {}", request_item);
     // }
 
-    // for request_item in split_request.iter() {
-    //     println!("request item {}", request_item);
-    // }
+    for request_item in split_request {
+        println!("request item {}", request_item);
+    }
+
+    // mut return request, path,  http version, body, headers
+
+    return {
+        Request {
+            mathod: "".to_string(),
+            path: "".to_string(),
+            http_version: "".to_string(),
+            header: HashMap::new(),
+            body: Some("".to_string()),
+        }
+    };
 }
