@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 pub fn parser(request: &Cow<'_, str>) {
-    let split_request: Vec<&str> = request.split(' ').collect();
+    // let split_request: Vec<&str> = request.split(' ').collect();
 
     println!("{}", request);
 
