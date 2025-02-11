@@ -1,6 +1,6 @@
 use std::{borrow::Cow, collections::HashMap};
 
-struct Request {
+pub struct Request {
     mathod: String,
     path: String,
     http_version: String,
@@ -10,26 +10,21 @@ struct Request {
 
 pub fn parser(request: &Cow<'_, str>) -> Request {
     let split_request: Vec<&str> = request.split(' ').collect();
+    let main_request_http = &split_request.clone()[0..3];
 
-    println!("{}", request);
+    for header in request.split("\r\n").skip(1) {
+        let split_header: Vec<&str> = header.split(':').map(|s| s.trim()).collect();
 
-    // for request_item in &split_request[1..] {
-    //     println!("request item {}", request_item);
-    // }
-
-    for request_item in split_request {
-        println!("request item {}", request_item);
+        for (key, value) in split_header.iter().zip(split_header.iter().skip(1)) {
+            println!("key {} value {}", key, value);
+        }
     }
 
-    // mut return request, path,  http version, body, headers
-
-    return {
-        Request {
-            mathod: "".to_string(),
-            path: "".to_string(),
-            http_version: "".to_string(),
-            header: HashMap::new(),
-            body: Some("".to_string()),
-        }
+    return Request {
+        mathod: main_request_http[0].to_string(),
+        path: main_request_http[1].to_string(),
+        http_version: main_request_http[2].to_string(),
+        header: HashMap::new(),
+        body: None,
     };
 }
