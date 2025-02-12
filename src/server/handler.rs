@@ -1,4 +1,4 @@
-use crate::server::http_parser;
+use crate::server::http_parser::{self, Request};
 use std::io::{Read, Write};
 
 pub fn handle_client(socket: &mut std::net::TcpStream) {
@@ -7,7 +7,8 @@ pub fn handle_client(socket: &mut std::net::TcpStream) {
     match socket.read(&mut buffer) {
         Ok(n) => {
             let http_line_request = String::from_utf8_lossy(&buffer[..n]);
-            http_parser::parser(&http_line_request);
+            let request = http_parser::parser(&http_line_request);
+            println!("request {}", request.http_version);
             let response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 13\r\n\r\nHello, World!";
 
             if http_line_request.contains("GET /favicon.ico HTTP/1.1") {
