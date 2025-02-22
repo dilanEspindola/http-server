@@ -1,4 +1,4 @@
-use crate::server::http_parser::{self, Request};
+use crate::server::http_parser;
 use std::io::{Read, Write};
 
 pub fn handle_client(socket: &mut std::net::TcpStream) {
