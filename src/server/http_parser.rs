@@ -2,7 +2,7 @@ use std::{borrow::Cow, collections::HashMap};
 
 #[derive(Debug)]
 pub struct Request {
-    pub mathod: String,
+    pub method: String,
     pub path: String,
     pub http_version: String,
     pub header: HashMap<String, String>,
@@ -24,7 +24,7 @@ pub fn parser(request: &Cow<'_, str>) -> Request {
     }
 
     return Request {
-        mathod: main_request_http[0].to_string(),
+        method: main_request_http[0].to_string(),
         path: main_request_http[1].to_string(),
         http_version: main_request_http[2].to_string(),
         header: headers,
