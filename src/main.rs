@@ -54,6 +54,14 @@ fn main() -> std::io::Result<()> {
         ctx.response_text("home page");
     });
 
+    server.get("/post", |ctx| {
+        ctx.response_text("post page");
+    });
+
+    server.get("/user", |ctx| {
+        ctx.response_text("user page");
+    });
+
     if let Err(e) = server.run("Server is running on port 4000") {
         eprintln!("failed to start server: {}", e);
         std::process::exit(1)
