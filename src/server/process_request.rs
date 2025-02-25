@@ -1,25 +1,32 @@
 use crate::{constants::Context, server::http_parser};
 use std::collections::HashMap;
 
+/* process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found */
+
 /**
- * THIS FUNCTION HANDLES THE ROUTES:
- * - Not found route
- * - if route exists it returns the response formated
- * - it returns text/plain
- * - it return json
- */
+* the handler function is the funciton that was declared in the main.rs file
+* the handler is the |ctx| {...code }
+*     server.get("/home", |ctx| {
+         ctx.text_plain("this is home route");
+       });
+* in the previous example we are calling the text_plain() function
+* the text_plain() function is the responsible for saving the value in the context(response_text)
+* when the value is saved in the context, you can access to those properties, that's why we are passing a mutable reference in the handler() below.
+*
+& We are saving the method, path because we may use them in the main.rs file
+*/
 pub fn process_request(
     routes: &HashMap<String, fn(&mut Context)>,
     request: http_parser::Request,
 ) -> String {
     if let Some(handler) = routes.get(&request.path) {
         let mut context = Context::new();
-        context.method(&request.method);
-        context.path(&request.path);
+        context.save_method(&request.method);
+        context.save_path(&request.path);
 
         handler(&mut context);
 
-        if let Some(text_response) = &context.response_text {
+        if let Some(text_response) = context.response_text {
             return format!(
                 "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}",
                 text_response.len(),
@@ -27,7 +34,7 @@ pub fn process_request(
             );
         }
 
-        if let Some(json_response) = &context.json_response {
+        if let Some(json_response) = context.json_response {
             return format!("HTTP/1.1 200 OK \r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{}", json_response.len(), json_response);
         }
     }

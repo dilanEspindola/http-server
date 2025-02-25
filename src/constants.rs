@@ -14,10 +14,10 @@ pub enum HttpMethods {
 
 #[derive(Debug, Clone)]
 pub struct Context {
-    method: Option<String>,
-    path: Option<String>,
-    query: Option<HashMap<String, String>>,
-    params: Option<HashMap<String, String>>,
+    pub method: Option<String>,
+    pub path: Option<String>,
+    pub query: Option<HashMap<String, String>>,
+    pub params: Option<HashMap<String, String>>,
     pub response_text: Option<String>,
     pub json_response: Option<String>,
 }
@@ -34,11 +34,11 @@ impl Context {
         };
     }
 
-    pub fn method(&mut self, method: &str) {
+    pub fn save_method(&mut self, method: &str) {
         self.method = Some(method.to_string());
     }
 
-    pub fn path(&mut self, path: &str) {
+    pub fn save_path(&mut self, path: &str) {
         self.path = Some(path.to_string());
     }
 
