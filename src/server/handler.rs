@@ -38,12 +38,11 @@ pub fn handle_client(socket: &mut std::net::TcpStream, routes: &HashMap<String, 
 
 /**
  * THIS FUNCTION HANDLES THE ROUTES:
- * - Not foond route
+ * - Not found route
  * - if route exists it returns the response formated
  * - it returns text/plain
- * TODO: handle json response because it's returning a text/plain by default
+ * - it return json
  */
-
 fn handle_routes(
     routes: &HashMap<String, fn(&mut Context)>,
     request: http_parser::Request,
@@ -59,25 +58,32 @@ fn handle_routes(
 
             value(&mut context);
 
-            let response_text = context
+            if context.response_text.is_some() {
+                let response_text = context
                 .response_text
                 .as_ref()
-                .map_or("default", String::as_str);
+                .unwrap();
 
-            response = format!(
-                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}",
-                response_text.len(),
-                response_text
-            );
-            break;
+                response = format!(
+                    "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}",
+                    response_text.len(),
+                    response_text
+                );
+                break;
+            }            
+
+                if context.json_response.is_some() {
+              response = format!("HTTP/1.1 200 OK \r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{}", context.json_response.as_mut().unwrap().len(), context.json_response.as_mut().unwrap());
+              break;
+            }
         }
 
         // handles not found
-        if request.path != *key {            
-            let message_content = "page not found";
-            response = format!("HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n Content-Length: {}\r\n\r\n{}", 
-            message_content.len(), 
-            message_content                        
+        if request.path != *key {                        
+            let json_response = r#"{"status": 404, "message": "page not found"}"#;
+            response = format!("HTTP/1.1 404 Not Found\r\nContent-Type: application/json\r\n Content-Length: {}\r\n\r\n{}", 
+                json_response.len(), 
+                json_response
             );
         }
     }

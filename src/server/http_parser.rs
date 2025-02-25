@@ -17,6 +17,8 @@ pub fn parser(request: &Cow<'_, str>) -> Request {
     for header in request.split("\r\n").skip(1) {
         let split_header: Vec<&str> = header.split(':').map(|s| s.trim()).collect();
 
+        println!("{:?}", split_header);
+
         for (key, value) in split_header.iter().zip(split_header.iter().skip(1)) {
             headers.insert(key.to_string(), value.to_string());
         }
