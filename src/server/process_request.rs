@@ -13,7 +13,7 @@ use std::collections::HashMap;
 * the text_plain() function is the responsible for saving the value in the context(response_text)
 * when the value is saved in the context, you can access to those properties, that's why we are passing a mutable reference in the handler() below.
 *
-& We are saving the method, path because we may use them in the main.rs file
+* We are saving the method, path because we may use them in the main.rs file
 */
 pub fn process_request(
     routes: &HashMap<String, fn(&mut Context)>,
