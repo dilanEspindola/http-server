@@ -4,6 +4,8 @@ use std::collections::HashMap;
 fn main() -> std::io::Result<()> {
     let mut server = server_handler::Server::new("4000");
 
+    println!("hello");
+
     server.get("/home", |ctx| {
         ctx.text_plain("home page");
     });
