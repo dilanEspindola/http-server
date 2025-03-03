@@ -4,14 +4,24 @@ use std::collections::HashMap;
 fn main() -> std::io::Result<()> {
     let mut server = server_handler::Server::new("4000");
 
-    println!("hello");
-
     server.get("/home", |ctx| {
-        ctx.text_plain("home page");
+        ctx.text_plain("GET - home rotue");
     });
 
     server.get("/post", |ctx| {
-        ctx.text_plain("post page");
+        let mut response = HashMap::new();
+        response.insert("message", "GET - post route");
+        ctx.json(response);
+    });
+
+    server.post("/post", |ctx| {
+        let mut response = HashMap::new();
+        response.insert("message", "POST_CREATED");
+        ctx.json(response);
+    });
+
+    server.get("/hello", |ctx| {
+        ctx.text_plain("GET - hello route");
     });
 
     server.get("/contact", |ctx| {

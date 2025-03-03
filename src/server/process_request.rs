@@ -1,4 +1,4 @@
-use crate::{constants::Context, server::http_parser};
+use crate::{constants::insert_reuquest_method_before, constants::Context, server::http_parser};
 use std::collections::HashMap;
 
 /* process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found */
@@ -19,7 +19,9 @@ pub fn process_request(
     routes: &HashMap<String, fn(&mut Context)>,
     request: http_parser::Request,
 ) -> String {
-    if let Some(handler) = routes.get(&request.path) {
+    let path = insert_reuquest_method_before(&request.path, &request.method);
+
+    if let Some(handler) = routes.get(&path) {
         let mut context = Context::new();
         context.save_method(&request.method);
         context.save_path(&request.path);

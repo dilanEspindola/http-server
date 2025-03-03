@@ -11,6 +11,7 @@ pub trait HttpServerTrait {
     fn new(port: &str) -> Self;
     fn run(&self, message: &str) -> std::io::Result<()>;
     fn get(&mut self, route: &str, handler: fn(&mut Context));
+    fn post(&mut self, route: &str, handler: fn(&mut Context));
 }
 
 impl HttpServerTrait for Server {
@@ -47,6 +48,12 @@ impl HttpServerTrait for Server {
     }
 
     fn get(&mut self, route: &str, handler: fn(&mut Context)) {
-        self.routes.insert(route.to_string(), handler);
+        let path_method = format!("GET-{}", route);
+        self.routes.insert(path_method, handler);
+    }
+
+    fn post(&mut self, route: &str, handler: fn(&mut Context)) {
+        let path_method = format!("POST-{}", route);
+        self.routes.insert(path_method, handler);
     }
 }
