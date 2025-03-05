@@ -25,6 +25,8 @@ pub fn process_request(
         let mut context = Context::new();
         context.save_method(&request.method);
         context.save_path(&request.path);
+        context.save_headers(request.headers);
+        context.save_body(request.body.unwrap_or(HashMap::new()));
 
         handler(&mut context);
 
@@ -37,6 +39,7 @@ pub fn process_request(
         }
 
         if let Some(json_response) = context.json_response {
+            println!("json_response: {}", json_response);
             return format!("HTTP/1.1 200 OK \r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{}", json_response.len(), json_response);
         }
     }

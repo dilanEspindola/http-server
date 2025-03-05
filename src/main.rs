@@ -16,7 +16,18 @@ fn main() -> std::io::Result<()> {
 
     server.post("/post", |ctx| {
         let mut response = HashMap::new();
-        response.insert("message", "POST_CREATED");
+
+        // reading body
+        let body = ctx.body.as_mut().unwrap();
+        let product = body.get("product").unwrap();
+        let name = product.get("name").unwrap().to_string();
+        let price = product.get("price").unwrap().to_string();
+
+        // println!("Product {} => name: {}, price: {}", product, name, price);
+
+        response.insert("message", "POST_CREATED".to_string());
+        response.insert("product_name", name);
+        response.insert("product_price", price);
         ctx.json(response);
     });
 
