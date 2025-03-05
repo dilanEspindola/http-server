@@ -1,5 +1,4 @@
-use crate::constants::Context;
-use crate::server;
+use crate::server::{client_communication, context::Context};
 use std::{collections::HashMap, net::TcpListener, thread};
 
 pub struct Server {
@@ -32,7 +31,7 @@ impl HttpServerTrait for Server {
             match stream {
                 Ok(mut socket) => {
                     thread::spawn(move || {
-                        server::client_communication::process_client_communication(
+                        client_communication::process_client_communication(
                             &mut socket,
                             &routes,
                         );
