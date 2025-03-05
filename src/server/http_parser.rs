@@ -1,6 +1,5 @@
-use std::{borrow::Cow, collections::HashMap};
-
 use serde_json::Value;
+use std::{borrow::Cow, collections::HashMap};
 
 pub struct Request {
     pub method: String,
@@ -28,6 +27,16 @@ pub fn parser(request: &Cow<'_, str>) -> Request {
         headers.insert(key.to_string(), value.to_string());
     }
 
+    if body.is_empty() {
+        return Request {
+            method: main_request_splitted[0].to_string(),
+            path: main_request_splitted[1].to_string(),
+            http_version: main_request_splitted[2].to_string(),
+            headers: headers,
+            body: None,
+        };
+    }
+
     let body_parsed = match serde_json::from_str::<serde_json::Value>(&body.to_string()) {
         Ok(s) => {
             let hashmap: HashMap<String, Value> =
@@ -35,7 +44,6 @@ pub fn parser(request: &Cow<'_, str>) -> Request {
             hashmap
         }
         Err(_) => {
-            // Value::Null;
             panic!("Error parsing body");
         }
     };
