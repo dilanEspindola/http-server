@@ -1,7 +1,5 @@
-use crate::{
-    constants::Context,
-    server::{http_parser, process_request},
-};
+use crate::server::{http_parser, process_request, context::Context};
+
 use std::{
     collections::HashMap,
     io::{Read, Write},

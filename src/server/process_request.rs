@@ -1,4 +1,4 @@
-use crate::{constants::insert_request_method_before, constants::Context, server::http_parser};
+use crate::server::{http_parser, context::insert_request_method_before, context::Context};
 use std::collections::HashMap;
 
 /* process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found */

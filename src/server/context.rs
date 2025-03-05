@@ -57,7 +57,6 @@ impl Context {
         self.headers
     }
 }
-
 pub fn insert_request_method_before(path: &String, method: &String) -> String {
     let mut path = path.clone();
     path.insert_str(0, format!("{}-", method).as_str());
