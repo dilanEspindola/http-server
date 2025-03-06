@@ -6,7 +6,7 @@ use std::collections::HashMap;
 pub struct Context {
     pub method: Option<String>,
     pub path: Option<String>,
-    headers: Option<HashMap<String, String>>,
+    pub headers: Option<HashMap<String, String>>,
     pub body: Option<HashMap<String, Value>>,
     pub query: Option<HashMap<String, String>>,
     pub params: Option<HashMap<String, String>>,

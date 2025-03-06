@@ -1,4 +1,4 @@
-use crate::server::{http_parser, context::insert_request_method_before, context::Context};
+use crate::server::{context::insert_request_method_before, context::Context, http_parser};
 use std::collections::HashMap;
 
 /* process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found */
@@ -39,7 +39,6 @@ pub fn process_request(
         }
 
         if let Some(json_response) = context.json_response {
-            println!("json_response: {}", json_response);
             return format!("HTTP/1.1 200 OK \r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{}", json_response.len(), json_response);
         }
     }
