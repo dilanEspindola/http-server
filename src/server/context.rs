@@ -1,4 +1,3 @@
-use serde::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
 
@@ -40,9 +39,9 @@ impl Context {
         self.response_text = Some(text_plain.to_string());
     }
 
-    pub fn json(&mut self, map_response: impl Serialize) {
-        let serialized = serde_json::to_string(&map_response).unwrap();
-        self.json_response = Some(serialized);
+    pub fn json(&mut self, response: Value) {
+        let seralize_string = serde_json::to_string(&response).unwrap();
+        self.json_response = Some(seralize_string);
     }
 
     pub fn save_body(&mut self, body: HashMap<String, Value>) {

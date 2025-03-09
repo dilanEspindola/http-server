@@ -1,6 +1,5 @@
 use http_server::server::server_handler::{self, HttpServerTrait};
 use serde_json::json;
-use std::collections::HashMap;
 
 fn main() -> std::io::Result<()> {
     let mut server = server_handler::Server::new("4000");
@@ -10,22 +9,18 @@ fn main() -> std::io::Result<()> {
     });
 
     server.get("/post", |ctx| {
-        let mut response = HashMap::new();
-        response.insert("message", "GET - post route");
-        ctx.json(response);
+        ctx.text_plain("GET - post path");
     });
 
     server.post("/post", |ctx| {
-        let mut response = HashMap::new();
-
         let body = ctx.body.as_mut().unwrap();
         let product = body.get("product").unwrap();
-        let name = product.get("name").unwrap().to_string();
-        let price = product.get("price").unwrap().to_string();
-
-        response.insert("message", "POST_CREATED".to_string());
-        response.insert("product_name", name);
-        response.insert("product_price", price);
+        let user = body.get("user_data").unwrap();
+        let response = json!({
+            "message": "POST_CREATED",
+            "product": product,
+            "user": user
+        });
         ctx.json(response);
     });
 
@@ -34,11 +29,10 @@ fn main() -> std::io::Result<()> {
     });
 
     server.get("/contact", |ctx| {
-        let mut map_response = HashMap::new();
-        map_response.insert("status".to_string(), "200".to_string());
-        map_response.insert("message".to_string(), "contact page".to_string());
-
-        ctx.json(map_response);
+        ctx.json(json!({
+            "status": 200,
+            "message": "GET - contact route"
+        }));
     });
 
     if let Err(e) = server.run("Server is running on port 4000") {
