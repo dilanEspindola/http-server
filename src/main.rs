@@ -14,12 +14,9 @@ fn main() -> std::io::Result<()> {
 
     server.post("/post", |ctx| {
         let body = ctx.body.as_mut().unwrap();
-        let product = body.get("product").unwrap();
-        let user = body.get("user_data").unwrap();
         let response = json!({
             "message": "POST_CREATED",
-            "product": product,
-            "user": user
+            "content": body
         });
         ctx.json(response);
     });
