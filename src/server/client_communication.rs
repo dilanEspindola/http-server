@@ -1,15 +1,16 @@
-use crate::server::{http_parser, process_request, context::Context};
+use crate::server::{context::Context, http_parser, process_request};
 
 use std::{
     collections::HashMap,
     io::{Read, Write},
+    vec,
 };
 
 pub fn process_client_communication(
     socket: &mut std::net::TcpStream,
     routes: &HashMap<String, fn(&mut Context)>,
 ) {
-    let mut buffer = [0; 1024];
+    let mut buffer = vec![0u8; 1024 * 3];
 
     match socket.read(&mut buffer) {
         Ok(n) => {
