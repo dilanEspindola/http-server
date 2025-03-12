@@ -11,6 +11,9 @@ pub trait HttpServerTrait {
     fn run(&self, message: &str) -> std::io::Result<()>;
     fn get(&mut self, route: &str, handler: fn(&mut Context));
     fn post(&mut self, route: &str, handler: fn(&mut Context));
+    fn put(&mut self, route: &str, handler: fn(&mut Context));
+    fn patch(&mut self, route: &str, handler: fn(&mut Context));
+    fn delete(&mut self, route: &str, handler: fn(&mut Context));
 }
 
 impl HttpServerTrait for Server {
@@ -31,10 +34,7 @@ impl HttpServerTrait for Server {
             match stream {
                 Ok(mut socket) => {
                     thread::spawn(move || {
-                        client_communication::process_client_communication(
-                            &mut socket,
-                            &routes,
-                        );
+                        client_communication::process_client_communication(&mut socket, &routes);
                     });
                 }
                 Err(e) => {
@@ -55,4 +55,10 @@ impl HttpServerTrait for Server {
         let path_method = format!("POST-{}", route);
         self.routes.insert(path_method, handler);
     }
+
+    fn put(&mut self, route: &str, handler: fn(&mut Context)) {}
+
+    fn patch(&mut self, route: &str, handler: fn(&mut Context)) {}
+
+    fn delete(&mut self, route: &str, handler: fn(&mut Context)) {}
 }
