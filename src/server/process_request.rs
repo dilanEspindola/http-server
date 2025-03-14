@@ -1,20 +1,19 @@
 use crate::server::{context::insert_request_method_before, context::Context, http_parser};
 use std::collections::HashMap;
 
-/* process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found */
+// process_request function processes uncoming request and returns the response and response may be text/plain or json. Also responds a 4040 if route not found
 
-/**
-* the handler function is the funciton that was declared in the main.rs file
-* the handler is the |ctx| {...code }
-*     server.get("/home", |ctx| {
-         ctx.text_plain("this is home route");
-       });
-* in the previous example we are calling the text_plain() function
-* the text_plain() function is the responsible for saving the value in the context(response_text)
-* when the value is saved in the context, you can access to those properties, that's why we are passing a mutable reference in the handler() below.
-*
-* We are saving the method, path because we may use them in the main.rs file
-*/
+// the handler function is the funciton that was declared in the main.rs file
+// the handler is the |ctx| {...code }
+//    server.get("/home", |ctx| {
+//        ctx.text_plain("this is home route");
+//       });
+// in the previous example we are calling the text_plain() function
+// the text_plain() function is the responsible for saving the value in the context(response_text)
+// when the value is saved in the context, you can access to those properties, that's why we are passing a mutable reference in the handler() below.
+//
+// We are saving the method, path because we may use them in the main.rs file
+
 pub fn process_request(
     routes: &HashMap<String, fn(&mut Context)>,
     request: http_parser::Request,
