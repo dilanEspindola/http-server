@@ -32,6 +32,10 @@ mod tests {
         assert_eq!(
             request.headers.get("Authorization").unwrap(),
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlRlc3QgVXNlciJ9.vq1u0DcNGB9r3U4dM_1oGveIQA6Yz8XkJOzHDIqiZPQ"
-        )
+        );
+        assert_eq!(
+            request.body.unwrap().get("user").unwrap().to_string(),
+            "{\"email\":\"john.doe@example.com\",\"id\":12345,\"name\":\"John Doe\"}"
+        );
     }
 }
