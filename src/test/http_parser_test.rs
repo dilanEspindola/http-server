@@ -1,8 +1,7 @@
-use crate::server::http_parser;
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::server::http_parser;
     #[test]
     fn http_parser() {
         let http_line_request =
