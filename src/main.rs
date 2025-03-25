@@ -4,10 +4,6 @@ use serde_json::json;
 fn main() -> std::io::Result<()> {
     let mut server = server_handler::Server::new("4000");
 
-    server.get("/home", |ctx| {
-        ctx.text_plain("GET - home rotue");
-    });
-
     server.get("/post", |ctx| {
         ctx.text_plain("GET - post path");
     });
@@ -21,14 +17,31 @@ fn main() -> std::io::Result<()> {
         ctx.json(response);
     });
 
-    server.get("/hello", |ctx| {
-        ctx.text_plain("GET - hello route");
-    });
-
     server.get("/contact", |ctx| {
         ctx.json(json!({
             "status": 200,
             "message": "GET - contact route"
+        }));
+    });
+
+    server.put("/put-route", |ctx| {
+        ctx.json(json!({
+            "status": 200,
+            "message": "PUT - put route"
+        }));
+    });
+
+    server.patch("/patch-route/param:id", |ctx| {
+        ctx.json(json!({
+           "status": 200,
+            "message": "PATCH - patch route"
+        }));
+    });
+
+    server.delete("/delete-route", |ctx| {
+        ctx.json(json!({
+            "status": 200,
+            "message": "DELETE - delete route"
         }));
     });
 

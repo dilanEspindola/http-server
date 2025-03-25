@@ -1,5 +1,5 @@
 use crate::server::{client_communication, context::Context};
-use std::{collections::HashMap, net::TcpListener, thread};
+use std::{collections::HashMap, fmt::format, net::TcpListener, thread};
 
 pub struct Server {
     port: String,
@@ -56,9 +56,18 @@ impl HttpServerTrait for Server {
         self.routes.insert(path_method, handler);
     }
 
-    fn put(&mut self, route: &str, handler: fn(&mut Context)) {}
+    fn put(&mut self, route: &str, handler: fn(&mut Context)) {
+        let path_method = format!("PUT-{}", route);
+        self.routes.insert(path_method, handler);
+    }
 
-    fn patch(&mut self, route: &str, handler: fn(&mut Context)) {}
+    fn patch(&mut self, route: &str, handler: fn(&mut Context)) {
+        let path_method = format!("PATCH-{}", route);
+        self.routes.insert(path_method, handler);
+    }
 
-    fn delete(&mut self, route: &str, handler: fn(&mut Context)) {}
+    fn delete(&mut self, route: &str, handler: fn(&mut Context)) {
+        let path_method = format!("DELETE-{}", route);
+        self.routes.insert(path_method, handler);
+    }
 }
