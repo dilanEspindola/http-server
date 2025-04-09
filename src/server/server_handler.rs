@@ -1,5 +1,5 @@
 use crate::server::{client_communication, context::Context};
-use std::{collections::HashMap, fmt::format, net::TcpListener, thread};
+use std::{collections::HashMap, net::TcpListener, thread};
 
 pub struct Server {
     port: String,
